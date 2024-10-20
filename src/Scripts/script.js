@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import {GUI} from 'dat.gui'
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-
+import { gsap } from "gsap/gsap-core";
 const gui = new GUI();
 const ringsFolder = gui.addFolder('Add Rings');
 ringsFolder.open();
@@ -265,21 +265,30 @@ const tick = () => {
 tick();
 
 document.addEventListener('keydown', onDocumentKeyDown, false);
-
+// if(sun){
+//   sun.addEventListener('mouseover', onHovering, false)
+//   sun.addEventListener('mouseout', onMouseOut, false)
+// }
+function onHovering(event){
+  sun.scale.set(2, 2, 2)
+}
+function onMouseOut(event){
+  sun.scale.set(1, 1, 1)
+}
 function onDocumentKeyDown(event) {
   switch (event.key) {
       case 'ArrowDown':
-          spaceship.position.z += 0.5;
-          break;
+        zPlus();
+        break;
       case 'ArrowUp':
-          spaceship.position.z -= 0.5;
-          break;
+        zMinus();
+        break;
       case 'ArrowLeft':
-          spaceship.position.x -= 0.5;
-          break;
+        xMinus()  
+        break;
       case 'ArrowRight':
-          spaceship.position.x += 0.5;
-          break;
+        xPlus();
+        break;
   }
 }
 
@@ -311,12 +320,39 @@ const animate = () => {
     // camera.lookAt(spaceship.position);
     // Camera option one
     
-    camera.position.x = (earth.position.x + 40);
-    camera.position.y = (earth.position.y + 40);
-    camera.position.z = (earth.position.z + 40);
-    camera.lookAt(solarSystem.position);
+     camera.position.x = (earth.position.x + 40);
+     camera.position.y = (earth.position.y + 40);
+     camera.position.z = (earth.position.z + 40);
+     camera.lookAt(solarSystem.position);
   }
   window.requestAnimationFrame(animate);
 }
-
+let xPlus = () => {gsap.to(spaceship.position, {
+  x: spaceship.position.x + 6,
+  // y: 10,
+  // z: 10,
+  duration: 0.5, // Duration in seconds
+  ease: "power1.inOut" // Easing function
+})}
+let xMinus = () => {gsap.to(spaceship.position, {
+  x: spaceship.position.x - 6,
+  // y: 10,
+  // z: 10,
+  duration: 0.5, // Duration in seconds
+  ease: "power1.inOut" // Easing function
+})}
+let zPlus = () => {gsap.to(spaceship.position, {
+  z: spaceship.position.z + 6,
+  // y: 10,
+  // z: 10,
+  duration: 0.5, // Duration in seconds
+  ease: "power1.inOut" // Easing function
+})}
+let zMinus = () => {gsap.to(spaceship.position, {
+  z: spaceship.position.z - 6,
+  // y: 10,
+  // z: 10,
+  duration: 0.5, // Duration in seconds
+  ease: "power1.inOut" // Easing function
+})}
 animate();
